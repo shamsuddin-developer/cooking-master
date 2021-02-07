@@ -24,7 +24,7 @@ body {
 .btn-color:hover {
   color: #fff;
 }
-#meal-list {
+meal-list {
   cursor: pointer;
 }
 
