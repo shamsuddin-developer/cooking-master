@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ecd269;
+  color: #3c2d62;
+}
+.background {
+  background-color: #ecd269 !important;
+}
+.font-color {
+  color: hsl(257, 37%, 28%) !important;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.link-color {
+  color: #3c2d62;
+  font-weight: 500;
+}
+.btn-color {
+  background-color: #3c2d62;
+  color: #fff;
+  font-weight: 700;
+}
+.btn-color:hover {
+  color: #fff;
+}
+
+img.card-img-top {
+  border-radius: 13px 13px 0 0;
+}
+.border-radius {
+  border-radius: 13px;
+}
