@@ -24,6 +24,9 @@ body {
 .btn-color:hover {
   color: #fff;
 }
+#meal-list {
+  cursor: pointer;
+}
 
 img.card-img-top {
   border-radius: 13px 13px 0 0;
