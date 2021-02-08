@@ -4,6 +4,9 @@ body {
   background-color: #ecd269;
   color: #3c2d62;
 }
+h3 {
+  font-size: 24px;
+}
 .background {
   background-color: #ecd269 !important;
 }

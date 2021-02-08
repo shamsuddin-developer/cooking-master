@@ -1,60 +1,56 @@
-const searchBtn = document.getElementById("search-btn");
-const mealList = document.getElementById("meal-list");
-const singleMeal = document.getElementById("single-meal");
+const resultHeading = document.getElementById("search-info");
+const mealContain = document.getElementById("meal-container");
+const mealDescription = document.getElementById("meal-description");
+const searchBtn = document.getElementById("search");
+searchBtn.addEventListener("click", searchMeals);
 
-// CLick event Listener for search button
-searchBtn.addEventListener("click", function () {
-  let searchResult = document.getElementById("input-value").value.trim();
-  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchResult}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data.meals);
-      let createHtml = "";
-      if (data.meals) {
-        data.meals.forEach((meal) => {
-          createHtml += `
-                  <div class = "col-lg-3" data-id = "${meal.idMeal}">
-                      <div class="card border-radius shadow my-3">
-                          <img class=" card-img-top" src="${meal.strMealThumb}" alt="food">
-                        <div class="card-body meal-head">
-                          <h3 class="text-center card-title">${meal.strMeal}</h3>
-                        </div>
-                       </div>
-                  </div>
-              `;
-        });
-      } else {
-        alert("Sorry, we didn't find any meal that you are looking for!");
-      }
+function searchMeals(e) {
+  e.preventDefault();
+  document.getElementById("meal-description").innerHTML = "";
+  const term = document.getElementById("input").value;
+  if (term.trim()) {
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
+      .then((res) => res.json())
+      .then((data) => {
+        resultHeading.innerHTML = `<h2 class="text-uppercase text-center"> Search for "${term}" </h2>`;
+        if (data.meals === null) {
+          alert(`Sorry, ${term} is not available!`);
+        } else {
+          mealContain.innerHTML = data.meals
+            .map(
+              (meal) => `
 
-      mealList.innerHTML = createHtml;
-    });
-});
-
-//Fetch Meal By Id
-
-function getMealById(mealID) {
-  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
-    .then((res) => res.json())
-    .then((data) => {
-      let meal = data.meals[0];
-      addMealToDOM(meal);
-    });
+                    <div class = "col-lg-4">
+                    <div class="card border-radius shadow my-3 meals"  data-ID="${meal.idMeal}">
+                        <img class="card-img-top" src="${meal.strMealThumb}" alt="food">
+                      <div class="card-body ">
+                        <h3 class="text-center card-title">${meal.strMeal}</h3>
+                      </div>
+                     </div>
+                </div>
+                    `
+            )
+            .join("");
+        }
+      });
+  } else {
+    alert("Please insert a value in search");
+  }
 }
 
-//fetch Meal
-function randomMeal() {
-  //Clear Meals and Heading
+// fetch meal by id
 
-  fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+function getMealById(mealId) {
+  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
     .then((res) => res.json())
     .then((data) => {
+      console.log(data);
       const meal = data.meals[0];
       addMealToDOM(meal);
     });
 }
 
-//Add meal to DOM
+//  add meal to dom
 
 function addMealToDOM(meal) {
   const ingredients = [];
@@ -68,37 +64,37 @@ function addMealToDOM(meal) {
     }
   }
 
-  singleMeal.innerHTML = `
-  <div class="single-meal">
-  <h1>${meal.strMeal}</h1>
-  <img src="${meal.strMealThumb}" alt="${meal.strMeal}"/>
-  <div class="single-meal-info">
-  ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ""}
-  ${meal.strArea ? `<p>${meal.strArea}</p>` : ""}
-  </div>
-  <div class="main">
-  <p>${meal.strInstructions}</p>
-  <h2>Ingredients</h2>
-  <ul>
-  ${ingredients.map((ing) => `<li>${ing}</li>`).join("")}
-  </ul>
-  </div>
-  </div>
-  `;
+  mealDescription.innerHTML = `
+  <div class = "col-lg-12">
+  
+ 
+    <div class="card border-radius shadow my-3 p-4">
+    <h2 class ="text-center my-3 text-uppercase"> ${meal.strMeal} </h2>
+    <img class="w-50 img-fluid m-auto rounded" src="${
+      meal.strMealThumb
+    }" alt="${meal.strMeal}">
+    <div class="text-center my-3">
+    ${meal.strCategory ? `<p class="fw-bold">${meal.strCategory}</p>` : ""}
+    ${meal.strArea ? `<p class="fw-bold"> ${meal.strArea}</p>` : ""}
+    </div>
+    <h2 class="text-center my-3">Ingredients</h2>
+    <ul style="list-style-type: none;" class="text-center p-0 m-0">
+    ${ingredients.map((ing) => `<li>${ing}</li>`).join("")}
+    </ul>
+    </div>
+    `;
 }
 
-//Event Listener
-
-mealList.addEventListener("click", (e) => {
+mealContain.addEventListener("click", (e) => {
   const mealInfo = e.path.find((item) => {
     if (item.classList) {
-      return item.classList.contains("meal-head");
+      return item.classList.contains("meals");
     } else {
       return false;
     }
   });
   if (mealInfo) {
-    const mealID = mealInfo.getAttribute("data-id");
-    getMealById(mealID);
+    const mealId = mealInfo.getAttribute("data-id");
+    getMealById(mealId);
   }
 });

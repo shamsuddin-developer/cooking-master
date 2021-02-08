@@ -41,20 +41,21 @@
 
         <div class="container">
             <!-- Search Box -->
-            <div class="d-flex w-50 mx-auto mt-3">
-                <input id="input-value" class="form-lg-control form-control" type="search"
-                    placeholder="Search Your Recipe...">
-                <button id="search-btn" class="btn btn-color" type="submit">Search</button>
-            </div>
-            <!-- Meal Item Description -->
-            <div id="single-meal"></div>
+            <div class="">
 
-            <!-- Search Result -->
-            <div class="border-radius">
-                <div id="meal-list" class="row mt-5">
-
-                </div>
+                <form class="d-flex w-50 mx-auto mt-3">
+                    <div class="input-group mb-3">
+                        <input id="input" type="text" class="form-lg-control form-control"
+                            placeholder="Search Your Recipe...">
+                        <div class="input-group-append">
+                            <button id="search" type="button" class="btn btn-color">Search</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+            <div id="meal-description"></div>
+            <div id="search-info"></div>
+            <div id="meal-container" class="row"></div>
 
         </div>
     </section>
